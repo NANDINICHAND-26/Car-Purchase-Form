@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Form Result</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="form-container">
+    <h2>Submitted Car Purchase Details</h2>
+    <div id="resultData"></div>
+    <a href="index.html">← Back to Form</a>
+  </div>
+
+  <script>
+    const resultDiv = document.getElementById("resultData");
+    const data = JSON.parse(localStorage.getItem("carFormData"));
+
+    if (!data || data.length === 0) {
+      resultDiv.innerHTML = "<p>No data found. Please submit the form first.</p>";
+    } else {
+      data.forEach(entry => {
+        const companyBlock = document.createElement("div");
+        companyBlock.className = "model-group";
+
+        let modelsHTML = "";
+        entry.models.forEach(modelEntry => {
+          modelsHTML += `
+            <li>
+              <strong>Model:</strong> ${modelEntry.model}<br/>
+              <strong>Experience:</strong> ${modelEntry.experience} year(s)
+            </li>
+          `;
+        });
+
+        companyBlock.innerHTML = `
+          <p><strong>Company:</strong> ${entry.company}</p>
+          <ul>${modelsHTML}</ul>
+        `;
+
+        resultDiv.appendChild(companyBlock);
+      });
+    }
+  </script>
+</body>
+</html>
